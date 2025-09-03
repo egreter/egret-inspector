@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Egret Inspector Test</title>
+</head>
+<body>
+    <h1>Egret Inspector 测试页面</h1>
+    <p>请按 F12 打开开发者工具，然后检查 Egret 标签页是否出现。</p>
+    
+    <script>
+        // 模拟 Egret 环境用于测试
+        window.egret = window.egret || {};
+        window.egret.devtool = window.egret.devtool || {};
+        window.egret.devtool.start = function() {
+            console.log('Egret DevTool started successfully!');
+            return true;
+        };
+        
+        console.log('Test page loaded, egret object:', window.egret);
+    </script>
+</body>
+</html>
