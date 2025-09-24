@@ -30,7 +30,10 @@
             "resources": [
                 "injectScripts.min.js",
                 "ipt/inject/*.js",
-                "*"
+                "ipt/shared/*.js",
+                "ipt/panel/*",
+                "ipt/panel/scripts/*",
+                "ipt/panel/style/*"
             ],
             "matches": ["<all_urls>"]
         }

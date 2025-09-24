@@ -20,6 +20,41 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     if (message == "getTab") {
         sendResponse(sender);
     }
+    
+
+    
+    // 处理脚本执行请求 - 使用Chrome标准API
+    if (message.action === "executeScript" && message.code) {
+        // 获取当前活动标签页并执行脚本
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+            if (tabs[0]) {
+                chrome.scripting.executeScript({
+                    target: { tabId: tabs[0].id },
+                    func: function(code) {
+                        try {
+                            // 直接执行代码，chrome.scripting API不受CSP限制
+                            eval(code);
+                            return { success: true };
+                        } catch(error) {
+                            console.error('[Egret调试器] 脚本执行失败:', error);
+                            return { success: false, error: error.message };
+                        }
+                    },
+                    args: [message.code]
+                }).then(function(results) {
+
+                    sendResponse(results[0]?.result || { success: true });
+                }).catch(function(error) {
+                    console.error('[Egret调试器] Chrome脚本API失败:', error);
+                    sendResponse({ success: false, error: error.message });
+                });
+            } else {
+                sendResponse({ success: false, error: 'No active tab found' });
+            }
+        });
+        return true; // 保持消息通道开放以进行异步响应
+    }
+    
     return true; // Required for async responses in Manifest V3
 });
 
@@ -41,6 +76,34 @@ var PortHandler = function() {
         }
         if (message.toDevTool) {
             if (devToolPort) devToolPort.postMessage(message);
+        }
+        // 处理通过DevTool注入的请求
+        if (message.data && message.data.name === 'injectViaDevTool') {
+
+            if (devToolPort) {
+                devToolPort.postMessage({
+                    action: 'injectViaDevTool',
+                    code: message.data.code
+                });
+            }
+        }
+        
+        // 处理ping请求，用于连接检测
+        if (message.data && message.data.name === 'ping') {
+
+            // 直接回复pong，表示连接正常
+        }
+        
+        // 处理刷新请求，重新建立数据流
+        if (message.data && message.data.name === 'refresh') {
+            console.log('[Egret调试器] 面板刷新请求');
+            // 通知content script重新初始化
+            if (contentPort) {
+                contentPort.postMessage({
+                    toContent: true,
+                    data: { name: 'reinitialize' }
+                });
+            }
         }
     };
     
