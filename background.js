@@ -47,7 +47,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 								success: true
 							};
 						} catch (error) {
-							console.error('[Egret调试器] 脚本执行失败:', error);
+							// console.error('[Egret调试器] 脚本执行失败:', error);
 							return {
 								success: false,
 								error: error.message
@@ -61,7 +61,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 						success: true
 					});
 				}).catch(function(error) {
-					console.error('[Egret调试器] Chrome脚本API失败:', error);
+					// console.error('[Egret调试器] Chrome脚本API失败:', error);
 					sendResponse({
 						success: false,
 						error: error.message
@@ -118,7 +118,7 @@ var PortHandler = function() {
 
 		// 处理刷新请求，重新建立数据流
 		if (message.data && message.data.name === 'refresh') {
-			console.log('[Egret调试器] 面板刷新请求');
+			// console.log('[Egret调试器] 面板刷新请求');
 			// 通知content script重新初始化
 			if (contentPort) {
 				contentPort.postMessage({

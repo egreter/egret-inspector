@@ -60,13 +60,13 @@ chrome.devtools.panels.create("Egret", "icon.png", "ipt/panel/index.html", funct
 
                         try {
                             egret.devtool.start();
-                            console.log('[Egret调试器] 调试器启动成功');
+                            // console.log('[Egret调试器] 调试器启动成功');
                         } catch(e) {
-                            console.error('[Egret调试器] 启动失败:', e);
+                            // console.error('[Egret调试器] 启动失败:', e);
                         }
                     } else if (attempts >= maxAttempts) {
                         clearInterval(intervalId);
-                        console.error('[Egret调试器] 超时: 无法启动egret.devtool.start');
+                        // console.error('[Egret调试器] 超时: 无法启动egret.devtool.start');
                     }
                 }, 100);
             })();
@@ -80,7 +80,7 @@ chrome.devtools.panels.create("Egret", "icon.png", "ipt/panel/index.html", funct
 		// 防止重复触发，间隔小于1秒的导航事件认为是同一次
 		if (currentTime - lastNavigation > 1000) {
 			connected = false;
-			console.log('[Egret调试器] 由于页面刷新，重置连接状态');
+			// console.log('[Egret调试器] 由于页面刷新，重置连接状态');
 
 			// 延迟执行初始化，等待页面脚本加载完成
 			// 使用多个延迟尝试，确保初始化成功
@@ -135,13 +135,13 @@ chrome.devtools.panels.create("Egret", "icon.png", "ipt/panel/index.html", funct
 				// 使用chrome.devtools.inspectedWindow.eval，这个可以绕过CSP
 				chrome.devtools.inspectedWindow.eval(message.code, function(result, isException) {
 					if (isException) {
-						console.error('[Egret调试器] DevTool脚本执行失败:', isException);
+						// console.error('[Egret调试器] DevTool脚本执行失败:', isException);
 					} else {
 
 					}
 				});
 			} catch (e) {
-				console.error('[Egret调试器] DevTool脚本错误:', e);
+				// console.error('[Egret调试器] DevTool脚本错误:', e);
 			}
 		}
 

@@ -1030,6 +1030,7 @@ var egret;
 					if (e != this.chkPreventTouch.is(":checked")) this.chkPreventTouch.attr(
 						"checked", e);
 					window.localStorage.setItem("preventTouch", String(e));
+					// console.log("[Egret调试器] 面板发送 preventTouch:", this._preventTouch);
 					this.port.post({
 						name: "preventTouch",
 						data: this._preventTouch
@@ -1643,8 +1644,7 @@ var egret;
 					n.profilePanel.port = t;
 					n.treePanel.init();
 					n.propsPanel.init();
-					n.profilePanel.init();
-					n.sendOptions()
+					n.profilePanel.init()
 				};
 				this.changeLayout = function(e) {
 					var t = $(".left").width();
